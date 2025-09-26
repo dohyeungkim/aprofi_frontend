@@ -27,7 +27,7 @@ import type { editor } from "monaco-editor";
 // ✅ 전역 로딩 스토어
 import { useLoadingStore } from "@/lib/loadingStore";
 // 🔥 CHANGE 1: 새로운 PresenceIndicator import 추가
-// import { PresenceIndicator } from "./PresenceIndicator";
+import { PresenceIndicator } from "./PresenceIndicator";
 
 // ===================== (중요) 전역 템플릿 상수로 이동 =====================
 const DEFAULT_TEMPLATES: { [lang: string]: string } = {
@@ -858,22 +858,13 @@ export default function WriteCodePageClient({
   if (!problem || !Array.isArray(testCases)) {
     return <div>로딩 중...</div>;
   }
-
-  // 실시간 사용자 현황을 위한 pageId와 user 데이터 생성
-  // const pageId = `problem-${params.groupId}-${params.examId}-${params.problemId}`;
-  // const currentUser = {
-  //   userId: userId,
-  //   nickname: userNickname,
-  // };
-
   // ...앞부분 동일
-
   // 실시간 사용자 현황을 위한 pageId와 user 데이터 생성
-  // const pageId = `problem-${params.groupId}-${params.examId}-${params.problemId}`;
-  // const currentUser = {
-  //   userId: userId,
-  //   nickname: userNickname,
-  // };
+  const pageId = `problem-${params.groupId}-${params.examId}-${params.problemId}`;
+  const currentUser = {
+  userId: userId,
+  nickname: userNickname,
+  };
 
   return !problem ? (
     <div>로딩 중...</div>
@@ -886,6 +877,14 @@ export default function WriteCodePageClient({
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2 }}
       >
+        
+          
+					{/* 🔥 CHANGE 3: 새로운 PresenceIndicator 컴포넌트 사용 */}
+					{userId && userNickname && <PresenceIndicator pageId={pageId} user={currentUser} />} 
+				
+      
+      
+      
         {/* 왼쪽: 문제 제목 (말줄임 처리) + 선택: 유형 배지 */}
         <div className="flex items-center min-w-0 gap-2">
           <h1
