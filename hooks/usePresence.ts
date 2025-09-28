@@ -14,7 +14,7 @@ export interface PresenceData {
 }
 
 export function usePresence(pageId: string, currentUser: { userId: string; nickname: string }) {
-	const [presenceData, setPresenceData] = useState<PresenceData>({
+	const [presenceData, setPresenceData] = useState < PresenceData > ({
 		count: 0,
 		users: [],
 	})
@@ -31,19 +31,19 @@ export function usePresence(pageId: string, currentUser: { userId: string; nickn
 			console.log("✅ WebSocket 연결 성공")
 			// 사용자 접속 알림 전송
 			if (currentUser.userId && currentUser.nickname && sessionId) {
-			ws.send(
-				JSON.stringify({
-					type: "join",
-					user: {
-						userId: currentUser.userId,
-						nickname: currentUser.nickname,
-						joinedAt: new Date().toISOString(),
-						lastActivity: new Date().toISOString(),
-						sessionId
-					},
-				})
-			)
-		}
+				ws.send(
+					JSON.stringify({
+						type: "join",
+						user: {
+							userId: currentUser.userId,
+							nickname: currentUser.nickname,
+							joinedAt: new Date().toISOString(),
+							lastActivity: new Date().toISOString(),
+							sessionId
+						},
+					})
+				)
+			}
 		}
 
 		ws.onmessage = (event) => {
@@ -89,15 +89,15 @@ export function usePresence(pageId: string, currentUser: { userId: string; nickn
 
 		ws.onclose = () => {
 			if (ws.readyState === WebSocket.OPEN && currentUser.userId && sessionId) {
-      ws.send(JSON.stringify({
-        type: "leave",
-        userId: currentUser.userId, // 가능하면 sessionId도 같이 넣기
-        sessionId: sessionId,
-      }))
-			
-			console.log("🔌 WebSocket 연결 종료")
+				ws.send(JSON.stringify({
+					type: "leave",
+					userId: currentUser.userId, // 가능하면 sessionId도 같이 넣기
+					sessionId: sessionId,
+				}))
+
+				console.log("🔌 WebSocket 연결 종료")
+			}
 		}
-	}
 
 		ws.onerror = (error) => {
 			console.error("❌ WebSocket 에러:", error)
